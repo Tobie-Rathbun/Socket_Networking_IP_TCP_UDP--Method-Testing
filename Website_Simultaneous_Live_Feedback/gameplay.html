@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Server</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Server</h1>
+    <p>This page is a game server that communicates with a Python client using HTTP requests.</p>
+    <?php
+    // Set the correct content type for the response
+    header("Content-Type: application/json");
+
+    // Check if a request method was specified
+    if (!isset($_SERVER["REQUEST_METHOD"])) {
+        http_response_code(400);
+        die();
+    }
+
+    // Check the request method
+    switch ($_SERVER["REQUEST_METHOD"]) {
+        // If the request method is GET, choose a new random number
+        case "GET":
+            // Choose a random number between 1 and 100
+            $number = rand(1, 100);
+            // Return the number as a JSON object
+            echo json_encode(["number" => $number]);
+            break;
+        // If the request method is POST, check the guess
+        case "POST":
+            // Get the guess from the request body
+            $guess = json_decode(file_get_contents("php://input"), true)["guess"];
+            // Get the correct number from the session
+            $number = $_SESSION["number"];
+            // Check the guess and return the result as a JSON object
+            if ($guess < $number) {
+                echo json_encode(["result" => "Higher"]);
+            } elseif ($guess > $number) {
+                echo json_encode(["result" => "Lower"]);
+            } else {
+                echo json_encode(["result" => "Correct"]);
+            }
+            break;
+        // If the request method is not recognized, return an error
+        default:
+            http_response_code(405);
+            die();
+    }
+    ?>
+</body>
+</html>

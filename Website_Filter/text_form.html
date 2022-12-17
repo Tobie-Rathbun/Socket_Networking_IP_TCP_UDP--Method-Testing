@@ -1,0 +1,34 @@
+<!-- HTML code for the website -->
+<form id="form">
+    <label for="input">Enter text:</label><br>
+    <input type="text" id="input"><br>
+    <button type="submit">Submit</button>
+  </form>
+  
+  <script>
+    // JavaScript code to handle form submissions
+    const form = document.getElementById('form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();  // prevent the form from being submitted
+  
+      // Get the input text from the form
+      const input = document.getElementById('input').value;
+  
+      // Send the input text to the server
+      fetch('/send', {
+        method: 'POST',
+        body: JSON.stringify({ input }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    });
+  </script>
+  
+
+
+<!-- This code creates a simple website with a form that allows users to enter text. When the form is submitted, the input text is sent to the server as a POST request. The server receives the input text and sends it to the Python application using a TCP socket. The server then sends a response to the client indicating that the request was successful.
+
+This code sets up a simple server that listens for POST requests on port 8000 and sends the input text to a Python application running on localhost at port 10000. The Python application can then process the input text and send a response back to the server, if necessary.
+
+To use this code, you will need to run the server script on a machine that is accessible to both the website and the Python application. You will also need to set up the client-side code in the Python application to receive the input text and process it as needed.-->
